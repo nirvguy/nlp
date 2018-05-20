@@ -13,8 +13,6 @@ from .transforms import *
 from . import config
 
 BATCH_SIZE=100
-HIDDEN = 60
-EMBEDD = 15
 LR=0.005
 EPOCHS = 20
 NUM_WORKERS = 0
@@ -46,7 +44,7 @@ def main():
     train_dl = DataLoader(train_ds, batch_size=args.batch_size, num_workers=NUM_WORKERS, collate_fn=collate_fn)
     val_dl = DataLoader(val_ds, batch_size=args.val_batch_size, num_workers=NUM_WORKERS, collate_fn=collate_fn)
 
-    model = LSTMClassifier(classes=len(idx2class), embedd_dim=EMBEDD, hidden_size=HIDDEN, vocab_size=len(alphabet))
+    model = LSTMClassifier(classes=len(idx2class), embedd_dim=config.EMBEDD, hidden_size=config.HIDDEN, vocab_size=len(alphabet))
 
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
     criterion = torch.nn.CrossEntropyLoss()

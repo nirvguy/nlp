@@ -1,1 +1,3 @@
 USE_CUDA = False
+HIDDEN = 60
+EMBEDD = 15

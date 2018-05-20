@@ -10,9 +10,6 @@ from .dataset import NamesDataset
 from .transforms import surname2tensor, idx2class, alphabet
 from . import config
 
-
-HIDDEN = 60
-EMBEDD = 15
 WEIGHTS_PATH = os.path.join('output', 'surnames', 'weights', '0.pth')
 
 class Predictor(object):
@@ -22,7 +19,7 @@ class Predictor(object):
         self.load_model()
 
     def load_model(self):
-        self.model = LSTMClassifier(classes=len(idx2class), embedd_dim=EMBEDD, hidden_size=HIDDEN, vocab_size=len(alphabet))
+        self.model = LSTMClassifier(classes=len(idx2class), embedd_dim=config.EMBEDD, hidden_size=config.HIDDEN, vocab_size=len(alphabet))
         self.model.load_state_dict(torch.load(self.weights_path))
 
     def __call__(self, surname):

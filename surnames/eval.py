@@ -13,8 +13,6 @@ from .transforms import *
 from . import config
 
 BATCH_SIZE=100
-HIDDEN = 60
-EMBEDD = 15
 NUM_WORKERS = 0
 
 DATA_PATH = os.path.join('data', 'surnames')
@@ -34,7 +32,7 @@ def main():
 
     dl = DataLoader(names_dataset, batch_size=args.batch_size, num_workers=NUM_WORKERS, collate_fn=collate_fn)
 
-    model = LSTMClassifier(classes=len(idx2class), embedd_dim=EMBEDD, hidden_size=HIDDEN, vocab_size=len(alphabet))
+    model = LSTMClassifier(classes=len(idx2class), embedd_dim=config.EMBEDD, hidden_size=config.HIDDEN, vocab_size=len(alphabet))
 
     meters = {'Loss': LossMeter(torch.nn.CrossEntropyLoss()),
               'Accuracy': CategoricalAccuracy(aggregator=percentage(Average()))}
