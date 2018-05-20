@@ -9,7 +9,7 @@ class SupervisedValidator(torchtrainer.SupervisedValidator):
 
 class SupervisedTrainer(torchtrainer.SupervisedTrainer):
     def create_validator(self):
-        return SupervisedValidator(self.model, self.val_meters, self.criterion)
+        return SupervisedValidator(self.model, self.val_meters)
 
     def update_batch(self, lines, lengths, category):
         self.optimizer.zero_grad()
