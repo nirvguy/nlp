@@ -1,3 +1,4 @@
+import os
 import argparse
 import torch
 from torch.utils.data import DataLoader
@@ -20,21 +21,23 @@ NUM_WORKERS = 0
 TRAIN = True
 TRAINING_PROPORTION = 0.8
 
+DATA_PATH = os.path.join('data', 'surnames')
+WEIGHTS_PATH = os.path.join('output', 'surnames', 'weights')
+CSV_PATH = os.path.join('output', 'surnames', 'training_stats.csv')
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Train Surname classifier')
     parser.add_argument('--epochs', type=int, help='Number of epochs to train', default=EPOCHS)
     parser.add_argument('--batch_size', type=int, help='Training batch size', default=BATCH_SIZE)
     parser.add_argument('--val_batch_size', type=int, help='Batch size', default=BATCH_SIZE)
     parser.add_argument('--logging_frecuency', type=float, help='Logging frecuency', default=0.3)
-    parser.add_argument('--data', type=str, help="Path to data folder", default='data')
-    parser.add_argument('--weights', type=str, help="Path to weights", default='weights')
     parser.add_argument('--lr', type=float, help="Learning rate", default=LR)
     return parser.parse_args()
 
 def main():
     args = parse_args()
 
-    names_dataset = NamesDataset(args.data, train=True, transform=surname2tensor, label_transform=origin2tensor)
+    names_dataset = NamesDataset(DATA_PATH, train=True, transform=surname2tensor, label_transform=origin2tensor)
 
     splitter = CrossFoldValidation(names_dataset, valid_size=0.3)
 
@@ -49,8 +52,8 @@ def main():
     criterion = torch.nn.CrossEntropyLoss()
 
     callbacks = [ProgbarLogger(),
-                 ModelCheckpoint(path=args.weights, monitor='val_acc', mode='max'),
-                 CSVLogger('training_stats.csv')]
+                 ModelCheckpoint(path=WEIGHTS_PATH, monitor='val_acc', mode='max'),
+                 CSVLogger(CSV_PATH)]
 
     trainer = SupervisedTrainer(model,
                       optimizer=optimizer,
