@@ -6,11 +6,11 @@ import torchtrainer
 from torchtrainer.callbacks import ProgbarLogger, CSVLogger, ModelCheckpoint
 from torchtrainer.meters import CategoricalAccuracy
 from torchtrainer.utils.data import CrossFoldValidation
-from models import LSTMClassifier
-from dataset import NamesDataset
-from trainers import SupervisedTrainer
-from transforms import *
-import config
+from .models import LSTMClassifier
+from .dataset import NamesDataset
+from .trainers import SupervisedTrainer
+from .transforms import *
+from . import config
 
 BATCH_SIZE=100
 HIDDEN = 60
